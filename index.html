@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora DC Personal Shopper</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+    .calculator { max-width: 400px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .calculator h2 { text-align: center; color: #333; }
+    .calculator label { display: block; margin-top: 10px; color: #555; }
+    .calculator input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    .calculator button { width: 100%; padding: 10px; margin-top: 15px; background: #000; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .calculator button:hover { background: #333; }
+    .result { margin-top: 20px; background: #e7f4e4; padding: 15px; border-radius: 4px; color: #2d662d; }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <h2>Calculadora de Precio</h2>
+    <label for="price">Precio del artículo (USD):</label>
+    <input type="number" id="price" value="0" step="0.01">
+
+    <label for="taxRate">Tasa de impuesto (%) :</label>
+    <input type="number" id="taxRate" value="10" step="0.1">
+
+    <label for="feeRate">Mi comisión (%) :</label>
+    <input type="number" id="feeRate" value="20" step="0.1">
+
+    <label for="exchange">Tipo de cambio (MXN/USD):</label>
+    <input type="number" id="exchange" value="21" step="0.01">
+
+    <button onclick="calculate()">Calcular</button>
+
+    <div id="result" class="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    function calculate() {
+      const price = parseFloat(document.getElementById('price').value);
+      const taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
+      const feeRate = parseFloat(document.getElementById('feeRate').value) / 100;
+      const exchange = parseFloat(document.getElementById('exchange').value);
+
+      const tax = price * taxRate;
+      const subtotal = price + tax;
+      const fee = subtotal * feeRate;
+      const totalUSD = subtotal + fee;
+      const totalMXN = totalUSD * exchange;
+
+      const resultDiv = document.getElementById('result');
+      resultDiv.style.display = 'block';
+      resultDiv.innerHTML = `
+        <strong>Detalle del cálculo:</strong><br>
+        Impuesto (USD): $${tax.toFixed(2)}<br>
+        Subtotal (USD): $${subtotal.toFixed(2)}<br>
+        Comisión (USD): $${fee.toFixed(2)}<br>
+        <strong>Total (USD): $${totalUSD.toFixed(2)}</strong><br>
+        <strong>Total (MXN): $${totalMXN.toFixed(2)}</strong>
+      `;
+    }
+  </script>
+</body>
+</html>
